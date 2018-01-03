@@ -8,16 +8,16 @@ public class ResetCode : MonoBehaviour {
 
     public GameObject Disc;
 
-    public GameObject Basket;
+    public Transform[] Basket;
 
     void FixedUpdate()
     {
-        if (isStopped && ThrowingScript.hasThrown)
-        {           
-            transform.position = new Vector3(Disc.transform.position.x, Disc.transform.position.y + 1, Disc.transform.position.z);
-            transform.position = new Vector3(transform.position.x + -ThrowingScript.vector.x * 2, 
-                transform.position.y, 
-                transform.position.z + -ThrowingScript.vector.z * 2);
+        if (isStopped)
+        {
+            transform.position = new Vector3(Disc.transform.position.x, Disc.transform.position.y, Disc.transform.position.z);
+
+            transform.LookAt(Basket[HoleController.HoleNum]);
+
             isStopped = false;
         }
     }

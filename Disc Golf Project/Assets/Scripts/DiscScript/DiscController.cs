@@ -13,9 +13,9 @@ public class DiscController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (rb.velocity.magnitude < .01)
+        if (rb.velocity.magnitude < .05)
         {
-            ResetCode.isStopped = true;
+            //ResetCode.isStopped = true;
         }
     }
 }

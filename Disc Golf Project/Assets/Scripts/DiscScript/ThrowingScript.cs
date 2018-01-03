@@ -8,9 +8,9 @@ public class ThrowingScript : MonoBehaviour {
 
     public Rigidbody rb;
 
-    //Where is the basket
-    public GameObject Basket;
-    public static Vector3 vector;
+    public float Rot;
+
+    public static Vector3 lastLoc;                                              //Incase O.B.
 
     void Start()
     {
@@ -19,33 +19,39 @@ public class ThrowingScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !hasThrown)
+
+        if (AngleScript.SpeedSet == true && !hasThrown)
         {
+            lastLoc = transform.position;
             hasThrown = true;
+            DiscClass.CanMove = true;
             IsActive();
-            Thrown();
+            Thrown();            
         }
 
         if (!hasThrown)
+        {
             Rotation();
+        }
 
         //Stop Movement
         if (rb.velocity.magnitude < .01 && !hasThrown)
         {
-            rb.isKinematic = true;
-            vector = (Basket.transform.position - transform.transform.position).normalized;
+            rb.isKinematic = true;           
         }
     }
 
     void Thrown()
     {        
-        rb.AddRelativeForce(Vector3.forward * 5000);
+        rb.AddRelativeForce(Vector3.forward * AngleScript.Speed * 3);
+        HoleController.shotCount++;
+        ResetDiscScript.timer = 15;
     }
 
     void Rotation()
-    {
-        Quaternion Rotation = Quaternion.Euler(AngleScript.Pitch, 0, AngleScript.Tilt);
-        transform.rotation = Quaternion.Slerp(transform.rotation, Rotation, Time.deltaTime * 100);
+    {       
+        Quaternion Rotation = Quaternion.Euler(AngleScript.Pitch, RotateScript.totalRot, AngleScript.Tilt);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Rotation, Time.deltaTime * 100);                   
     }
 
     void IsActive()
