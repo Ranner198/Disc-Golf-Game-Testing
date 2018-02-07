@@ -8,18 +8,31 @@ ModelImporter:
     100000: Basket
     100002: //RootNode
     100004: Putter
+    100006: Putter.001
+    100008: Putter.002
     400000: Basket
     400002: //RootNode
     400004: Putter
+    400006: Putter.001
+    400008: Putter.002
     2300000: Basket
     2300002: Putter
     2300004: //RootNode
+    2300006: Putter.001
+    2300008: Putter.002
     3300000: Basket
     3300002: Putter
     3300004: //RootNode
+    3300006: Putter.001
+    3300008: Putter.002
     4300000: Putter
     4300002: Basket
+    4300004: Putter.002
+    4300006: Putter.001
     6400000: //RootNode
+    6400002: Putter
+    6400004: Putter.001
+    6400006: Putter.002
   materials:
     importMaterials: 1
     materialName: 0
