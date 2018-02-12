@@ -5,20 +5,18 @@ using UnityEngine;
 public class Glide : MonoBehaviour {
 
     public Rigidbody rb;
-
+    public float gravity = 9.81f;
     public float Mass;
-
 
 	void Update () {
 
-        if (Throw.hasThrow)
+        if (Throw.hasThrown)
         {
-            //add if statement for 2 speeds
-            if (rb.velocity.magnitude > 20)
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            else
-                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.magnitude - 32, rb.velocity.z);
+            float speed = rb.velocity.magnitude;
+            gravity = 9.81f;
+            float divided = gravity/speed;
+            Vector3 _Gravity = new Vector3(0, -divided, 0);
+            rb.AddForce(_Gravity);
         }
-
 	}
 }

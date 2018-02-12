@@ -10,6 +10,15 @@ public class RungBasketScript : MonoBehaviour {
 
     private float Timer = 0;
 
+    public GameObject DiscEmpty;
+
+    public SpawnDisc SD;
+
+    public void Start()
+    {
+        SD = DiscEmpty.GetComponent<SpawnDisc>();
+    }
+
     private void Update()
     {
         if (Timer >= 0)
@@ -25,7 +34,7 @@ public class RungBasketScript : MonoBehaviour {
         {
             if (HoleController.HoleNum == HoleNumber)
             {
-                hasRung = true;
+         
             }
             //Else Black Ace?
         }

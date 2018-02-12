@@ -7,54 +7,62 @@ public class SpawnDisc : MonoBehaviour {
     public GameObject[] _Disc;
     private int DiscSelection = 0;
 
-	void Start () {
+    //Get Direction
+    private Vector3 forward;
+
+    void Start () {
         DestoryAllDiscs();
 	}
 
 	void Update () {
 
-        //Scroll Wheel Disc Selection
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            DiscSelection++;
+        forward = new Vector3 (0, transform.eulerAngles.y, 0);
 
-            if (DiscSelection > _Disc.Length-1)
+        if (!Throw.hasThrown)
+        {
+            //Scroll Wheel Disc Selection
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                DiscSelection++;
+
+                if (DiscSelection > _Disc.Length - 1)
+                {
+                    DiscSelection = 0;
+                }
+
+                DestoryAllDiscs();
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                DiscSelection--;
+
+                if (DiscSelection < 0)
+                {
+                    DiscSelection = _Disc.Length - 1;
+                }
+
+                DestoryAllDiscs();
+            }
+
+            if (Input.GetKey(KeyCode.Alpha1))
             {
                 DiscSelection = 0;
+                DestoryAllDiscs();
             }
-
-            DestoryAllDiscs();
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            DiscSelection--;
-
-            if (DiscSelection < 0)
+            else if (Input.GetKey(KeyCode.Alpha2))
             {
-                DiscSelection = _Disc.Length-1;
+                DiscSelection = 1;
+                DestoryAllDiscs();
             }
-
-            DestoryAllDiscs();
-        }
-
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            DiscSelection = 0;
-            DestoryAllDiscs();
-        }
-        else if (Input.GetKey(KeyCode.Alpha2))
-        {
-            DiscSelection = 1;
-            DestoryAllDiscs();
-        }
-        else if (Input.GetKey(KeyCode.Alpha3))
-        {
-            DiscSelection = 2;
-            DestoryAllDiscs();
+            else if (Input.GetKey(KeyCode.Alpha3))
+            {
+                DiscSelection = 2;
+                DestoryAllDiscs();
+            }
         }
     }
 
-    void DestoryAllDiscs()
+    public void DestoryAllDiscs()
     {
         GameObject[] discsInScene = GameObject.FindGameObjectsWithTag("Disc");
         for (int i = 0; i < discsInScene.Length; i++)
@@ -66,12 +74,14 @@ public class SpawnDisc : MonoBehaviour {
 
     void SpawnNewDisc()
     {
-        GameObject Disc = Instantiate(_Disc[DiscSelection], transform.position, Quaternion.Euler(RotateDiscScript._Pitch, 0, -RotateDiscScript._Tilt));
+        GameObject Disc = Instantiate(_Disc[DiscSelection], transform.position, transform.rotation);
+        Disc.transform.rotation = transform.rotation;
     }
 
     public void UpdateRotation()
     {
         GameObject Disc = GameObject.FindGameObjectWithTag("Disc");
-        Disc.transform.rotation = Quaternion.Euler(RotateDiscScript._Pitch, 0, -RotateDiscScript._Tilt);
+        transform.rotation = Quaternion.Euler(RotateDiscScript._Pitch, forward.y, -RotateDiscScript._Tilt);
+        Disc.transform.rotation = transform.rotation;
     }
 }

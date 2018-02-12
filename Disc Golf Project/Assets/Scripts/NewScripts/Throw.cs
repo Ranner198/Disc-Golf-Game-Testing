@@ -10,25 +10,29 @@ public class Throw : MonoBehaviour {
     public Rigidbody rb;
 
     //Has Thrown or not
-    public static bool hasThrow = false;
+    public static bool hasThrown = false;
     public bool windUp = false;
-    private bool isMaxed = false;
+    private bool isMaxed = true;
+
+    public bool hasHitGroundYet;
 
     void Start () {
         _PowerSlider = GameObject.Find("Power").GetComponent<Slider>();
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
+        hasHitGroundYet = true;
 	}
-
+    
 	void Update () {
 
-        if (!hasThrow)
+        if (!hasThrown)
         {
             if (Input.GetKeyDown(KeyCode.Space) && windUp)
             {
-                hasThrow = true;
+                hasHitGroundYet = false;
+                hasThrown = true;
                 Power = _PowerSlider.value;
-                ThrowDisc();
+                ThrowDisc();               
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && !windUp)
@@ -43,12 +47,19 @@ public class Throw : MonoBehaviour {
                 BuildingPower();
             }
         }
-	}
+
+        if (hasHitGroundYet == false)
+        {
+            var Tilt = (float)RotateDiscScript._Tilt / 15;
+            rb.AddRelativeForce(Tilt, 0, 0);
+        }
+    }
 
     void ThrowDisc()
     {
         rb.isKinematic = false;
-        rb.velocity = transform.forward * (Power/3);
+        rb.velocity = transform.forward * Power/3;
+        windUp = false;           
     }
 
     void BuildingPower()
@@ -68,5 +79,11 @@ public class Throw : MonoBehaviour {
             windUp = false;
             _PowerSlider.value = 0;
         }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        hasHitGroundYet = true;
+        print("hit");
     }
 }

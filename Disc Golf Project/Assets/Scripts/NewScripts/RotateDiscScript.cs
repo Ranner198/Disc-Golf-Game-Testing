@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RotateDiscScript : MonoBehaviour {
 
-    public static int _Tilt, _Pitch, _Power;
+    public static int _Tilt, _Pitch;
 
     public GameObject DiscEmpty;
 
