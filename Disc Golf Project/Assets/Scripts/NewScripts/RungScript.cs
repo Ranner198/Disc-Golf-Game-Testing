@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class RungScript : MonoBehaviour {
@@ -10,19 +11,38 @@ public class RungScript : MonoBehaviour {
 
     public Transform[] teeBox;
 
-    public BoxCollider[] BaksetTrigger;
-
-    public GameObject DiscEmpty;
+    public GameObject[] BasketTarget;
 
     public Transform[] lookDownTeePad;
 
+    public GameObject DiscEmpty;
+
+    public static int Score, TotalScore;
+    public float Distance;
+
+    public Text _Score, _TotalScore, _Distance;
+
     void Update () {
 
+        _Score.text = "Strokes: " + Score.ToString();
+        _TotalScore.text = "Total Strokes: " + TotalScore.ToString();
+
+        Distance = (DiscEmpty.transform.position - BasketTarget[holeNumber].transform.position).magnitude;
+
+        _Distance.text = "Distance: " + Mathf.CeilToInt(Distance * 3.28f).ToString() + "\"";
+
         if (hasRung == true)
-        {        
+        {
+            TotalScore += Score;
+            Score = 0;
+
             hasRung = false;
 
             holeNumber++;
+
+            ResetSliders.resetRot = true;
+
+            Throw.stopPowerBuilder = false;
 
             if (holeNumber > teeBox.Length - 1)
             {
@@ -37,18 +57,4 @@ public class RungScript : MonoBehaviour {
             }
         }
 	}
-
-    public void OnGUI()                                             //Finish hole message
-    {
-        GUI.Label(new Rect(10, 40, Screen.width, Screen.height), "Total Shots: " + HoleController.shotCount + "\n\nYour total score: " + HoleController.totalShots);
-
-        if (hasRung)
-        {
-            /*
-            int Temp = HoleController.shotCount;
-            HoleController.shotCount = 0;
-            GUI.Label(new Rect(Screen.width / 2, Screen.height / 2, 500, 500), "You Rung It In: " + Temp);
-            */
-        }
-    }
 }

@@ -35,14 +35,26 @@ ModelImporter:
     400026: //RootNode
     2100000: TreeBark
     2100002: Leafs
+    2100004: TreeBark1
+    2100006: NewLeaves
     2300000: pCylinder7
     3300000: pCylinder7
     4300000: pCylinder7
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: NewLeaves
+    second: {fileID: 2100000, guid: 3399b533719aa0a42b51f668e2eef383, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TreeBark1
+    second: {fileID: 2100000, guid: 6fa40bc8b364c3043948c26cae32e7e0, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 2
     materialSearch: 1
     materialLocation: 1
   animations:

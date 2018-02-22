@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnDisc : MonoBehaviour {
 
     public GameObject[] _Disc;
-    private int DiscSelection = 0;
+    public static int DiscSelection = 2;
 
     //Get Direction
     private Vector3 forward;

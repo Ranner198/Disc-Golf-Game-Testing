@@ -13,7 +13,7 @@ public class Throw : MonoBehaviour {
     public static bool hasThrown = false;
     public bool windUp = false;
     private bool isMaxed = true;
-
+    public static bool stopPowerBuilder = false;
     public bool hasHitGroundYet;
 
     void Start () {
@@ -32,7 +32,8 @@ public class Throw : MonoBehaviour {
                 hasHitGroundYet = false;
                 hasThrown = true;
                 Power = _PowerSlider.value;
-                ThrowDisc();               
+                ThrowDisc();
+                _PowerSlider.value = 0.0f;
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && !windUp)
@@ -42,7 +43,7 @@ public class Throw : MonoBehaviour {
                 windUp = true;
             }
 
-            if (windUp)
+            if (windUp && !stopPowerBuilder)
             {
                 BuildingPower();
             }
@@ -52,18 +53,22 @@ public class Throw : MonoBehaviour {
         {
             var Tilt = (float)RotateDiscScript._Tilt / 15;
             rb.AddRelativeForce(Tilt, 0, 0);
+            rb.AddForce(Wind.speedX/5, 0, Wind.speedZ/5);           
         }
     }
 
     void ThrowDisc()
     {
+        RungScript.Score++;
         rb.isKinematic = false;
         rb.velocity = transform.forward * Power/3;
-        windUp = false;           
+        windUp = false;
+        stopPowerBuilder = true;
     }
 
     void BuildingPower()
-    {       
+    {      
+
         if (!isMaxed)
             _PowerSlider.value += 1 * Time.deltaTime * 60;
 
@@ -74,16 +79,15 @@ public class Throw : MonoBehaviour {
         {
             isMaxed = true;           
         }
-        else if (_PowerSlider.value < _PowerSlider.minValue)
+        else if (_PowerSlider.value == _PowerSlider.minValue)
         {
             windUp = false;
             _PowerSlider.value = 0;
-        }
+        }       
     }
 
     void OnCollisionEnter(Collision collision)
     {
         hasHitGroundYet = true;
-        print("hit");
     }
 }

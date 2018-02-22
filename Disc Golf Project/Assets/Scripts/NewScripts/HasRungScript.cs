@@ -33,8 +33,9 @@ public class HasRungScript : MonoBehaviour {
 
     IEnumerator WaitAndSpawn()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.0f);
         Destroy(Disc);
+        SpawnDisc.DiscSelection = 2;
         RungScript.hasRung = true;
         yield return new WaitForSeconds(1);
         SD.DestoryAllDiscs();        

@@ -10,6 +10,10 @@ public class Reset : MonoBehaviour {
 
     public SpawnDisc SD;
 
+    public bool isSafe = true;
+
+    //NewWind
+    public static bool newWind = true;
 
     //Locations
     public Transform DiscEmptyPos;
@@ -19,25 +23,34 @@ public class Reset : MonoBehaviour {
 	void Start () {
         rb = GetComponent<Rigidbody>();
         DiscEmpty = GameObject.FindGameObjectWithTag("DiscEmpty");
-        SD = DiscEmpty.GetComponent<SpawnDisc>();       
+        SD = DiscEmpty.GetComponent<SpawnDisc>();
+        ResetLoc();
     }
 
-	void Update () {
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Water")
+        {
+            isSafe = false;
+            StartCoroutine(ResetToSafe());
+        }
+    }
+
+    void LateUpdate () {
 
         if (!DiscEmptyPos)
             DiscEmptyPos = GameObject.FindGameObjectWithTag("DiscEmpty").transform;
 
-        if (!Throw.hasThrown)
-            LastSpot = transform.position;
-
         if (Throw.hasThrown)
         {
             
-            if (rb.velocity.magnitude < .1)
+            if (rb.velocity.magnitude < .08)
             {
                 Throw.hasThrown = false;
                 NewSpot = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
-                StartCoroutine(WaitAndMove());  
+
+                if (isSafe == true)
+                    StartCoroutine(WaitAndMove());
             }
         }
     }
@@ -46,12 +59,49 @@ public class Reset : MonoBehaviour {
 
         yield return new WaitForSeconds(1.0f);
 
+        newWind = true;
+
         DiscEmptyPos.transform.position = NewSpot;
 
         //Reset Throw
         Throw.hasThrown = false;
-       
+
         //Destroy and Reset
         SD.DestoryAllDiscs();
+
+        ResetLoc();
+
+        ResetSliders.resetRot = true;
+
+        Throw.stopPowerBuilder = false;
+    }
+
+    IEnumerator ResetToSafe()
+    {
+
+        yield return new WaitForSeconds(0.5f);
+
+        newWind = true;
+
+        DiscEmptyPos.transform.position = LastSpot;
+
+        //Reset Throw
+        Throw.hasThrown = false;
+
+        //Destroy and Reset
+        SD.DestoryAllDiscs();
+
+        RungScript.Score += 1;
+
+        isSafe = true;
+
+        ResetLoc();
+
+        Throw.stopPowerBuilder = false;
+    }
+
+    void ResetLoc()
+    {
+        LastSpot = DiscEmpty.transform.position;
     }
 }

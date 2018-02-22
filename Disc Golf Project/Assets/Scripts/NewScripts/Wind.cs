@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
+    public static float speedX, speedZ;
+
 	void Update () {
-		
+
+        if (Reset.newWind)
+        {
+            NewWind();
+            Reset.newWind = false;
+        }
+
 	}
+
+    void NewWind()
+    {
+        speedX = Random.Range(-1.0f, 1.0f);
+        speedZ = Random.Range(-1.0f, 1.0f);
+    }
 }
